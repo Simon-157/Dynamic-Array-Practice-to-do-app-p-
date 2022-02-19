@@ -1,27 +1,13 @@
-import java.io.FileWriter;
+
 import java.util.Scanner;
 
 public class App {
-    static ToDoList app = new ToDoList();
-    protected static String fileName = "scheduleFile.csv";
+    static ToDoList app = new ToDoList();;
 
-    public static void saveItemsToFile() {
-        ToDoListItem[] scheduleItems = app.getList();
-        try {
-            FileWriter scheduleFile = new FileWriter(fileName);
-            for (ToDoListItem item : scheduleItems) {
-                scheduleFile.write(item + "\n");
-            }
-            scheduleFile.close();
-            System.out.println("Successfully wrote to the file.");
-        } catch (Exception e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
-    }
+    // protected static String fileName = "scheduleFile.csv";
 
     public static void main(String[] args) {
-
+        app.readListFromFile();
         Scanner input = new Scanner(System.in);
         Scanner str = new Scanner(System.in);
 
@@ -45,17 +31,19 @@ public class App {
                 if (option == 7) {
 
                     System.out.print("Saving items to file.....\n");
-                    saveItemsToFile();
+                    app.writeListToFile();
                     break;
                 }
-
+                // app.writeListToFile();
                 if (option == 1) {
+
                     app.listItem();
+
                 }
 
                 if (option == 2) {
                     System.out.println("Enter the task to add to the list");
-                    newItem = str.nextLine();
+                    newItem = str.next();
                     app.addItem(newItem);
                     System.out.println(app.numItems);
                     System.out.println("An item successfully added to the list");

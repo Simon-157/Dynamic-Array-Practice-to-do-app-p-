@@ -1,34 +1,37 @@
+import java.io.FileWriter;
 import java.util.Scanner;
+import java.io.FileNotFoundException;
+import java.io.File;
 
 public class ToDoList {
-    protected int numItems;
-    protected int size;
+    int numItems;
+    int size;
     ToDoListItem[] toDoListItems;
 
     public ToDoList() {
         // toDoListItems = new String[size];
-        numItems = 0;
-        size = 1;
-        toDoListItems = new ToDoListItem[size];
+        this.numItems = 0;
+        this.size = 1;
+        toDoListItems = new ToDoListItem[this.size];
 
     }
 
     public void addItem(String newTask) {
 
-        if (numItems == size) {
+        if (this.numItems == size) {
             helper();
         }
         ToDoListItem task = new ToDoListItem(newTask);
-        toDoListItems[numItems] = task;
-        numItems++;
+        toDoListItems[this.numItems] = task;
+        this.numItems++;
         shiftItems();
-        // System.out.println("number of items is " + numItems);
+        // System.out.println("number of items is " + this.numItems);
 
     }
 
     private void helper() {
         ToDoListItem[] dummyArray = null;
-        if (numItems == size) {
+        if (this.numItems == size) {
             dummyArray = new ToDoListItem[size * 2];
             {
                 for (int i = 0; i < size; i++) {
@@ -44,33 +47,34 @@ public class ToDoList {
     public void shiftItems() {
         ToDoListItem[] dummyArray = null;
 
-        if (numItems > 0) {
-            dummyArray = new ToDoListItem[numItems];
-            for (int i = 0; i < numItems; i++) {
+        if (this.numItems > 0) {
+            dummyArray = new ToDoListItem[this.numItems];
+            for (int i = 0; i < this.numItems; i++) {
                 dummyArray[i] = toDoListItems[i];
             }
-            size = numItems;
+            size = this.numItems;
             toDoListItems = dummyArray;
         }
 
     }
 
     public int getNumItems() {
-        System.out.println("num items: " + numItems);
-        return numItems;
+        System.out.println("num items: " + this.numItems);
+        return this.numItems;
     }
 
     public void emptyList() {
-        toDoListItems = null;
+
+        toDoListItems = new ToDoListItem[1];
     }
 
     public void listItem() {
         int numberDone = 0;
         int i = 1;
-        if (toDoListItems == null || numItems == 0) {
+        if (toDoListItems == null || this.numItems == 0) {
             System.out.println("You have no items on your schedule");
         } else {
-            for (ToDoListItem item : toDoListItems) {
+            for (ToDoListItem item : this.toDoListItems) {
                 System.out.println(i + ") " + item.toString());
                 // if (item.contains("done")) {
                 // numberDone++;
@@ -126,7 +130,7 @@ public class ToDoList {
     }
 
     public void markAsDone(int index) {
-        if (index < 0 || index >= this.getNumItems()) {
+        if (index < 0 || index >= this.numItems) {
             throw new ArrayIndexOutOfBoundsException("Array Index Out of Bounds");
         } else {
             ToDoListItem task = toDoListItems[index];
@@ -146,26 +150,76 @@ public class ToDoList {
         toDoListItems[index] = task;
     }
 
+    public void writeListToFile() {
+
+        String fileName = "scheduleFile.csv";
+
+        try {
+            FileWriter scheduleFile = new FileWriter(fileName);
+            for (ToDoListItem item : toDoListItems) {
+                String status = "not done";
+                if (item.isDone()) {
+                    status = "done";
+                }
+                scheduleFile.write(item.getTask() + ',' + status + "\n");
+            }
+            scheduleFile.close();
+            System.out.println("Successfully wrote to the file.");
+        } catch (Exception e) {
+            System.out.println("An error occurred while writing to file.");
+            e.printStackTrace();
+        }
+    }
+
+    public void readListFromFile() {
+
+        File scheduleFile = new File("scheduleFile.csv");
+        try {
+            // this.emptyList();
+            Scanner file = new Scanner(scheduleFile);
+            while (file.hasNextLine()) {
+                String[] taskList = file.nextLine().split(",", 2);
+                String task = taskList[0];
+                this.addItem(task);
+                for (ToDoListItem item : toDoListItems) {
+                    if (taskList[1].equals("done")) {
+                        item.markDone();
+
+                    } else {
+                        item.markNotDone();
+                    }
+
+                }
+
+            }
+
+            file.close();
+
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred while reading From file.");
+            e.printStackTrace();
+        }
+    }
+
     // public static void main(String[] args) {
 
     // ToDoList app = new ToDoList();
 
-    // ToDoListItem task1 = new ToDoListItem("Hi");
-    // ToDoListItem task0 = new ToDoListItem("yi");
-    // ToDoListItem task2 = new ToDoListItem("ti");
-    // ToDoListItem task3 = new ToDoListItem("gi");
-    // ToDoListItem task4 = new ToDoListItem("ki");
-    // ToDoListItem task5 = new ToDoListItem("ri");
+    // String task1 = new String("Hi");
+    // String task0 = new String("yi");
+    // String task2 = new String("ti");
+    // String task3 = new String("gi");
+    // String task4 = new String("ki");
+    // String task5 = new String("ri");
 
-    // app.addItem(task1.toString());
-    // app.addItem(task0.toString());
-    // app.addItem(task2.toString());
-    // app.addItem(task3.toString());
-    // app.addItem(task4.toString());
-    // app.addItem(task5.toString());
+    // app.addItem(task1);
+    // app.addItem(task0);
+    // app.addItem(task2);
+    // app.addItem(task3);
+    // app.addItem(task4);
+    // app.addItem(task5);
 
     // app.getNumItems();
 
     // }
-
 }
