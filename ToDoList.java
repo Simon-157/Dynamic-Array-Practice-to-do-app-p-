@@ -85,28 +85,20 @@ public class ToDoList {
 
     }
 
-    public int find(String keyword) {
-
-        int i = 0;
-        int k = 0;
-        System.out.println(k + "items in your to-to list marched " + keyword);
-        for (ToDoListItem item : toDoListItems) {
-
-            if (item.toString().contains(keyword)) {
-
-                System.out.println(item.toString());
-                k++;
-            } else {
-                return -1;
-            }
-            i++;
-        }
-        System.out.println(k + "items in your to-to list marched " + keyword);
-        return i;
-    }
-
     public ToDoListItem[] getList() {
         return toDoListItems;
+    }
+
+    public void getItemAt(int index) {
+        try {
+            ToDoListItem foundTask = toDoListItems[index];
+            System.out.println(foundTask);
+            // return foundTask;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("The position you entered is invalid /no item found");
+
+        }
+
     }
 
     public void removeItemAt(int index) {
@@ -148,6 +140,35 @@ public class ToDoList {
         ToDoListItem task = toDoListItems[index];
         task.markNotDone();
         toDoListItems[index] = task;
+    }
+
+    public int find(String keyword) {
+
+        int numberOfSearchResults = 0;
+        for (int index = 0; index < this.numItems; index++) {
+            if (toDoListItems[index].toString().contains(keyword)) {
+                System.out.println(toDoListItems[index].toString());
+                numberOfSearchResults++;
+                return index;
+            }
+        }
+        System.out.println(numberOfSearchResults + "items in your to-to list marched " + keyword);
+        return -1;
+    }
+
+    public int findNext(int startingIndex, String keyword) {
+
+        int numberOfSearchResults = 0;
+        for (int index = startingIndex; index < this.numItems; index++) {
+            if (toDoListItems[index].toString().contains(keyword)) {
+                System.out.println(toDoListItems[index].toString());
+                numberOfSearchResults++;
+                return index;
+            }
+        }
+
+        return -1;
+
     }
 
     public void writeListToFile() {
