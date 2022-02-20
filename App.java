@@ -79,7 +79,7 @@ public class App {
                 if (option == 6) {
                     System.out.println("Enter a keyword to search for the task: ");
                     String keyword = str.nextLine();
-                    int index = app.find(keyword);
+                    int index = app.find(keyword.toLowerCase());
                     int numberOfSearchResults = 0;
                     for (int ind = index; ind < app.getNumItems();) {
                         if (index == -1) {
@@ -88,7 +88,7 @@ public class App {
                             app.getItemAt(index);
                             numberOfSearchResults++;
                         }
-                        int newPosition = app.findNext(index + 1, keyword);
+                        int newPosition = app.findNext(index + 1, keyword.toLowerCase());
                         index = newPosition;
                     }
                     System.out.println("Number of search results: " + numberOfSearchResults + '\n');

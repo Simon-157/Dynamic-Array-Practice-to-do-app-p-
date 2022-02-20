@@ -6,6 +6,7 @@ import java.io.File;
 public class ToDoList {
     int numItems;
     int size;
+
     ToDoListItem[] toDoListItems;
 
     public ToDoList() {
@@ -16,6 +17,9 @@ public class ToDoList {
 
     }
 
+    /**
+     * @param newTask
+     */
     public void addItem(String newTask) {
 
         if (this.numItems == size) {
@@ -33,12 +37,12 @@ public class ToDoList {
         ToDoListItem[] dummyArray = null;
         if (this.numItems == size) {
             dummyArray = new ToDoListItem[size * 2];
-            {
-                for (int i = 0; i < size; i++) {
-                    dummyArray[i] = toDoListItems[i];
-                }
-                // dummyArray = Arrays.copyOf(toDoListItems, size * 2);
+
+            for (int i = 0; i < size; i++) {
+                dummyArray[i] = toDoListItems[i];
             }
+            // dummyArray = Arrays.copyOf(toDoListItems, size * 2);
+
         }
         toDoListItems = dummyArray;
         size = size * 2;
@@ -58,6 +62,9 @@ public class ToDoList {
 
     }
 
+    /**
+     * @return int
+     */
     public int getNumItems() {
         return this.numItems;
     }
@@ -67,6 +74,9 @@ public class ToDoList {
         toDoListItems = new ToDoListItem[1];
     }
 
+    /**
+     * @return int
+     */
     public int getNumItemsDone() {
         int numberDone = 0;
         for (ToDoListItem item : this.toDoListItems) {
@@ -95,10 +105,13 @@ public class ToDoList {
 
     }
 
+    /**
+     * @param index
+     */
     public void getItemAt(int index) {
         try {
             ToDoListItem foundTask = toDoListItems[index];
-            System.out.println(foundTask);
+            System.out.println(index + ") " + foundTask);
             // return foundTask;
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("The position you entered is invalid /no item found");
@@ -107,6 +120,9 @@ public class ToDoList {
 
     }
 
+    /**
+     * @param index
+     */
     public void removeItemAt(int index) {
 
         if (index < 0 || index >= toDoListItems.length || toDoListItems == null) {
@@ -128,6 +144,9 @@ public class ToDoList {
 
     }
 
+    /**
+     * @param index
+     */
     public void markAsDone(int index) {
         if (index < 0 || index >= this.numItems) {
             throw new ArrayIndexOutOfBoundsException("Array Index Out of Bounds");
@@ -140,6 +159,9 @@ public class ToDoList {
 
     }
 
+    /**
+     * @param index
+     */
     public void markAsNotDone(int index) {
         if (index < 0 || index >= this.getNumItems()) {
             throw new ArrayIndexOutOfBoundsException("Array Index Out of Bounds");
@@ -149,19 +171,28 @@ public class ToDoList {
         toDoListItems[index] = task;
     }
 
+    /**
+     * @param keyword
+     * @return int
+     */
     public int find(String keyword) {
 
         for (int index = 0; index < this.numItems; index++) {
-            if (toDoListItems[index].getTask().contains(keyword)) {
+            if (toDoListItems[index].getTask().toLowerCase().contains(keyword)) {
                 return index;
             }
         }
         return -1;
     }
 
+    /**
+     * @param startingIndex
+     * @param keyword
+     * @return int
+     */
     public int findNext(int startingIndex, String keyword) {
         for (int index = startingIndex; index < this.numItems; index++) {
-            if (toDoListItems[index].getTask().contains(keyword)) {
+            if (toDoListItems[index].getTask().toLowerCase().contains(keyword)) {
                 return index;
             }
         }
@@ -220,33 +251,30 @@ public class ToDoList {
         }
     }
 
-    // public static void main(String[] args) {
+    /**
+     * @param args
+     */
+    /* Driver code */
+    public static void main(String[] args) {
 
-    // ToDoList app = new ToDoList();
+        ToDoList app = new ToDoList();
 
-    // String task1 = new String("Hi");
-    // String task0 = new String("yi");
-    // String task2 = new String("ti");
-    // String task3 = new String("gi");
-    // String task4 = new String("ki");
-    // String task5 = new String("ri");
+        String task1 = new String("Hi");
+        String task0 = new String("yi");
+        String task2 = new String("ti");
+        String task3 = new String("gi");
+        String task4 = new String("ki");
+        String task5 = new String("ri");
 
-    // app.addItem(task1);
-    // app.addItem(task0);
-    // app.addItem(task2);
-    // app.addItem(task3);
-    // app.addItem(task4);
-    // app.addItem(task5);
+        app.addItem(task1);
+        app.addItem(task0);
+        app.addItem(task2);
+        app.addItem(task3);
+        app.addItem(task4);
+        app.addItem(task5);
 
-    // app.getNumItems();
+        app.getNumItems();
 
-    // }
+        // }
+    }
 }
-
-// for (int index = startingIndex; index < this.numItems; index++) {
-// if (toDoListItems[index].toString().contains(keyword)) {
-// System.out.println(toDoListItems[index].toString());
-// numberOfSearchResults++;
-// return index;
-// }
-// }
