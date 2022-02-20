@@ -6,10 +6,7 @@ public class App {
 
     // protected static String fileName = "scheduleFile.csv";
 
-    public static void main(String[] args) {
-        app.readListFromFile();
-        Scanner input = new Scanner(System.in);
-        Scanner str = new Scanner(System.in);
+    public static void showOptions() {
 
         System.out.println("WELCOME TO MYSCHEDULE APP\nChoose an option to continue.");
         System.out.println(
@@ -20,6 +17,15 @@ public class App {
                         "5.Mark-not-done to an item \n" +
                         "6.Find an item in the list \n" +
                         "7.Quit \n");
+
+    }
+
+    public static void main(String[] args) {
+        showOptions();
+        app.readListFromFile();
+        Scanner input = new Scanner(System.in);
+        Scanner str = new Scanner(System.in);
+
         String newItem;
         while (true) {
 
@@ -29,7 +35,6 @@ public class App {
                 option = Integer.parseInt(opt);
 
                 if (option == 7) {
-
                     System.out.print("Saving items to file.....\n");
                     app.writeListToFile();
                     break;
@@ -74,12 +79,21 @@ public class App {
                 if (option == 6) {
                     System.out.println("Enter a keyword to search for the task: ");
                     String keyword = str.nextLine();
-                    app.find(keyword);
-
+                    int index = app.find(keyword);
+                    int numberOfSearchResults = 0;
+                    for (int ind = index; ind < app.getNumItems();) {
+                        if (index == -1) {
+                            break;
+                        } else {
+                            app.getItemAt(index);
+                            numberOfSearchResults++;
+                        }
+                        int newPosition = app.findNext(index + 1, keyword);
+                        index = newPosition;
+                    }
+                    System.out.println("Number of search results: " + numberOfSearchResults + '\n');
                 }
-
                 System.out.println("Choose an option to continue");
-
             } catch (NumberFormatException e) {
                 System.out.println("Invalid option! Try again.");
 

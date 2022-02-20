@@ -59,7 +59,6 @@ public class ToDoList {
     }
 
     public int getNumItems() {
-        System.out.println("num items: " + this.numItems);
         return this.numItems;
     }
 
@@ -152,31 +151,20 @@ public class ToDoList {
 
     public int find(String keyword) {
 
-        int numberOfSearchResults = 0;
         for (int index = 0; index < this.numItems; index++) {
-            String task = toDoListItems[index].toString();
-            if (task.contains(keyword)) {
-                System.out.println(task);
-                numberOfSearchResults++;
-
+            if (toDoListItems[index].getTask().contains(keyword)) {
+                return index;
             }
-
         }
-        System.out.println(numberOfSearchResults + " items in your to-to list marched " + keyword);
         return -1;
     }
 
     public int findNext(int startingIndex, String keyword) {
-
-        int numberOfSearchResults = 0;
         for (int index = startingIndex; index < this.numItems; index++) {
-            if (toDoListItems[index].toString().contains(keyword)) {
-                System.out.println(toDoListItems[index].toString());
-                numberOfSearchResults++;
+            if (toDoListItems[index].getTask().contains(keyword)) {
                 return index;
             }
         }
-
         return -1;
 
     }
@@ -254,3 +242,11 @@ public class ToDoList {
 
     // }
 }
+
+// for (int index = startingIndex; index < this.numItems; index++) {
+// if (toDoListItems[index].toString().contains(keyword)) {
+// System.out.println(toDoListItems[index].toString());
+// numberOfSearchResults++;
+// return index;
+// }
+// }
