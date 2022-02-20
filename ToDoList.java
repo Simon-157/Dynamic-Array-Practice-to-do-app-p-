@@ -52,9 +52,9 @@ public class ToDoList {
             for (int i = 0; i < this.numItems; i++) {
                 dummyArray[i] = toDoListItems[i];
             }
-            size = this.numItems;
-            toDoListItems = dummyArray;
         }
+        size = this.numItems;
+        toDoListItems = dummyArray;
 
     }
 
@@ -68,25 +68,32 @@ public class ToDoList {
         toDoListItems = new ToDoListItem[1];
     }
 
-    public void listItem() {
+    public int getNumItemsDone() {
         int numberDone = 0;
+        for (ToDoListItem item : this.toDoListItems) {
+            if (item.isDone()) {
+                numberDone++;
+            }
+        }
+        System.out.println(
+                "You have " + this.getNumItems() + " items on your schedule, " + numberDone + " of which are done.");
+        return numberDone;
+
+    }
+
+    public void listItem() {
+
         int i = 1;
         if (toDoListItems == null || this.numItems == 0) {
             System.out.println("You have no items on your schedule");
         } else {
+            this.getNumItemsDone();
             for (ToDoListItem item : this.toDoListItems) {
                 System.out.println(i + ") " + item.toString());
-                // if (item.contains("done")) {
-                // numberDone++;
-                // }
                 i++;
             }
         }
 
-    }
-
-    public ToDoListItem[] getList() {
-        return toDoListItems;
     }
 
     public void getItemAt(int index) {
@@ -115,6 +122,7 @@ public class ToDoList {
                 }
                 newToDoListItems[b++] = toDoListItems[j];
             }
+            numItems--;
             toDoListItems = newToDoListItems;
 
         }
@@ -146,13 +154,15 @@ public class ToDoList {
 
         int numberOfSearchResults = 0;
         for (int index = 0; index < this.numItems; index++) {
-            if (toDoListItems[index].toString().contains(keyword)) {
-                System.out.println(toDoListItems[index].toString());
+            String task = toDoListItems[index].toString();
+            if (task.contains(keyword)) {
+                System.out.println(task);
                 numberOfSearchResults++;
-                return index;
+
             }
+
         }
-        System.out.println(numberOfSearchResults + "items in your to-to list marched " + keyword);
+        System.out.println(numberOfSearchResults + " items in your to-to list marched " + keyword);
         return -1;
     }
 

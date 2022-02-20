@@ -13,7 +13,7 @@ public class App {
 
         System.out.println("WELCOME TO MYSCHEDULE APP\nChoose an option to continue.");
         System.out.println(
-                "1.View items on my list \n" +
+                "Make sure to quit before living to save all made changes \n1.View items on my list \n" +
                         "2.Add to my lsit \n" +
                         "3.Remove an item from my list \n" +
                         "4.Mark-done to an item \n" +
