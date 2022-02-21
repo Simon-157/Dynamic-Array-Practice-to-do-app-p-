@@ -18,8 +18,15 @@ public class ToDoList {
     }
 
     /**
-     * @param newTask
+     * If the number of items in the list is equal to the size of the array, then
+     * create a new array that
+     * is twice the size of the current array, copy the items from the current array
+     * into the new array,
+     * and then replace the current array with the new array
+     * 
+     * @param newTask the new task to be added to the list.
      */
+
     public void addItem(String newTask) {
 
         if (this.numItems == size) {
@@ -33,6 +40,9 @@ public class ToDoList {
 
     }
 
+    /**
+     * If the array is full, double its size
+     */
     private void helper() {
         ToDoListItem[] dummyArray = null;
         if (this.numItems == size) {
@@ -48,6 +58,9 @@ public class ToDoList {
         size = size * 2;
     }
 
+    /**
+     * Shift all the items in the array to the left by one position
+     */
     public void shiftItems() {
         ToDoListItem[] dummyArray = null;
 
@@ -63,19 +76,26 @@ public class ToDoList {
     }
 
     /**
-     * @return int
+     * Returns the number of items in the queue
+     * 
+     * @return The number of items in the list.
      */
     public int getNumItems() {
         return this.numItems;
     }
 
+    /**
+     * Empty the list of ToDoListItems
+     */
     public void emptyList() {
 
         toDoListItems = new ToDoListItem[1];
     }
 
     /**
-     * @return int
+     * Return the number of items in the to do list that are done.
+     * 
+     * @return The number of items done.
      */
     public int getNumItemsDone() {
         int numberDone = 0;
@@ -90,27 +110,33 @@ public class ToDoList {
 
     }
 
+    /**
+     * Prints out the items in the list
+     */
     public void listItem() {
-
-        int i = 1;
         if (toDoListItems == null || this.numItems == 0) {
             System.out.println("You have no items on your schedule");
         } else {
             this.getNumItemsDone();
-            for (ToDoListItem item : this.toDoListItems) {
-                System.out.println(i + ") " + item.toString());
-                i++;
+            for (int index = 0; index < this.numItems; index++) {
+                this.getItemAt(index);
+
             }
         }
 
     }
 
     /**
-     * @param index
+     * Prints the item at the specified index
+     * 
+     * @param index The position of the item you want to get.
      */
     public void getItemAt(int index) {
         try {
             ToDoListItem foundTask = toDoListItems[index];
+            if (index == 0) {
+                index++;
+            }
             System.out.println(index + ") " + foundTask);
             // return foundTask;
         } catch (ArrayIndexOutOfBoundsException e) {
@@ -121,7 +147,9 @@ public class ToDoList {
     }
 
     /**
-     * @param index
+     * Remove an item from the ToDoList at the specified index
+     * 
+     * @param index The index of the item to remove.
      */
     public void removeItemAt(int index) {
 
@@ -145,36 +173,28 @@ public class ToDoList {
     }
 
     /**
-     * @param index
+     * Mark the task at the given index as done
+     * 
+     * @param index The index of the item to mark as done.
      */
+
     public void markAsDone(int index) {
         if (index < 0 || index >= this.numItems) {
             throw new ArrayIndexOutOfBoundsException("Array Index Out of Bounds");
         } else {
-            ToDoListItem task = toDoListItems[index];
-            task.markDone();
-            toDoListItems[index] = task;
+            toDoListItems[index].markDone();
+
         }
-        // toDoListItems[index] = task.toString();
 
     }
 
-    /**
-     * @param index
-     */
     public void markAsNotDone(int index) {
         if (index < 0 || index >= this.getNumItems()) {
             throw new ArrayIndexOutOfBoundsException("Array Index Out of Bounds");
         }
-        ToDoListItem task = toDoListItems[index];
-        task.markNotDone();
-        toDoListItems[index] = task;
+        toDoListItems[index].markNotDone();
     }
 
-    /**
-     * @param keyword
-     * @return int
-     */
     public int find(String keyword) {
 
         for (int index = 0; index < this.numItems; index++) {
@@ -185,11 +205,6 @@ public class ToDoList {
         return -1;
     }
 
-    /**
-     * @param startingIndex
-     * @param keyword
-     * @return int
-     */
     public int findNext(int startingIndex, String keyword) {
         for (int index = startingIndex; index < this.numItems; index++) {
             if (toDoListItems[index].getTask().toLowerCase().contains(keyword)) {
@@ -229,31 +244,26 @@ public class ToDoList {
             Scanner file = new Scanner(scheduleFile);
             while (file.hasNextLine()) {
                 String[] taskList = file.nextLine().split(",", 2);
-                String task = taskList[0];
-                this.addItem(task);
-                for (ToDoListItem item : toDoListItems) {
-                    if (taskList[1].equals("done")) {
-                        item.markDone();
+                ToDoListItem task = new ToDoListItem(taskList[0]);
 
-                    } else {
-                        item.markNotDone();
-                    }
+                if (taskList[1].equals("done")) {
+                    task.done = true;
 
+                } else {
+                    task.done = false;
                 }
-
+                this.addItem(task.toString());
             }
 
             file.close();
+        }
 
-        } catch (FileNotFoundException e) {
+        catch (FileNotFoundException e) {
             System.out.println("An error occurred while reading From file.");
             e.printStackTrace();
         }
     }
 
-    /**
-     * @param args
-     */
     /* Driver code */
     public static void main(String[] args) {
 

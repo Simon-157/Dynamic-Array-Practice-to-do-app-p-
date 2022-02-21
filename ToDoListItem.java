@@ -1,6 +1,6 @@
 class ToDoListItem {
     private String task;
-    private boolean done;
+    boolean done;
 
     public ToDoListItem(String todo) {
         this.task = todo;
